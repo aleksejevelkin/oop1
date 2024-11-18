@@ -5,14 +5,12 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.util.Scanner;
 
-public class wiki{
+public class Wiki{
 
     static StringBuilder request(String query) throws IOException {
 
         String website = "https://ru.wikipedia.org/w/api.php?action=query&list=search&utf8=&format=json&srsearch=" + query;
-
         HttpURLConnection connection = (HttpURLConnection) new URL(website).openConnection();
-
         connection.setRequestMethod("GET");
 
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -28,16 +26,21 @@ public class wiki{
         return content;
     }
 
-    static void open_website(JsonResponse json) throws IOException {
+    static void openWebsite(JsonResponse json) throws IOException {
 
-        System.out.print("Введите № запроса: ");
-        Scanner scanner = new Scanner(System.in);
+        int pageid = 0;
+        try {
+            System.out.print("Введите № запроса: ");
+            Scanner scanner = new Scanner(System.in);
+            pageid = json.getQuery().getSearch().get(scanner.nextInt() - 1).getPageid();
+        } catch (IndexOutOfBoundsException e) {
+            System.out.print("Ошибка: запрос за пределами допустимого диапазона");
+            return;
+        }
 
-        int pageid = json.getQuery().getSearch().get(scanner.nextInt()-1).getPageid();
         Desktop desk = Desktop.getDesktop();
 
         URI uri = null;
-
         String website = "https://ru.wikipedia.org/w/index.php?curid=" + pageid;
 
         try {
@@ -48,6 +51,4 @@ public class wiki{
 
         desk.browse(uri);
     }
-
-    
 }

@@ -4,27 +4,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 
-public class console_functions{
+public class ConsoleFunctions{
 
-    static void print_titles(JsonResponse json){
-
+    static void printTitles(JsonResponse json){
         for (int i=0; i<json.getQuery().getSearch().size(); i++){
             System.out.println(i+1 + ". " +json.getQuery().getSearch().get(i).getTitle());
         }
     }
 
-
-    static String read() throws UnsupportedEncodingException {
-
+    static String readQuery() throws UnsupportedEncodingException {
         Scanner scanner = new Scanner(System.in);
-
         System.out.print("Введите запрос: ");
-
-        String request = scanner.nextLine();
-
-        request = URLEncoder.encode(request, StandardCharsets.UTF_8);
-
-        return request;
+        String query = scanner.nextLine();
+        query = URLEncoder.encode(query, StandardCharsets.UTF_8);
+        return query;
     }
-
 }
